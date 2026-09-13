@@ -283,7 +283,7 @@ thead th.name-th {
 }
 
 thead th.day-num {
-  min-width: 38px;
+  min-width: 54px;
 }
 thead th.weekend-col {
   background: var(--weekend-bg);
@@ -388,6 +388,33 @@ td.weekend-col {
 .chip.readonly {
   cursor: default;
   pointer-events: none;
+}
+
+/* Chip with exact hours (start–end + duration) */
+.chip.has-hours {
+  flex-direction: column;
+  width: 48px;
+  height: 36px;
+  gap: 1px;
+  line-height: 1.15;
+  cursor: default;
+}
+
+.chip-time {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.chip-hours {
+  font-size: 8px;
+  font-weight: 600;
+  opacity: 0.65;
+  text-transform: lowercase;
+}
+
+.chip.has-hours.conflict {
+  border-width: 1.5px;
 }
 
 /* ════════════════════════════

@@ -38,12 +38,134 @@ let schedule = {};
 let readOnly = false;
 
 /* ══════════════════════════════════════════
+   Фиксированные часы работы — Сентябрь 2026
+   Реальные интервалы (не общий "день/вечер"),
+   поэтому хранятся отдельно от schedule.
+══════════════════════════════════════════ */
+const HOURS_YEAR = 2026;
+const HOURS_MONTH = 8; // сентябрь (0-indexed)
+
+const HOURS_DATA = {
+  1: [{ id: "emp1", start: "12:00", end: "02:00", hours: 14 }],
+  2: [{ id: "emp3", start: "12:00", end: "02:00", hours: 14 }],
+  3: [{ id: "emp3", start: "12:00", end: "02:00", hours: 14 }],
+  4: [
+    { id: "emp1", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp3", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  5: [
+    { id: "emp1", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp3", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  6: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  7: [{ id: "emp2", start: "12:00", end: "02:00", hours: 14 }],
+  8: [{ id: "emp1", start: "12:00", end: "02:00", hours: 14 }],
+  9: [{ id: "emp1", start: "12:00", end: "02:00", hours: 14 }],
+  10: [{ id: "emp1", start: "12:00", end: "02:00", hours: 14 }],
+  11: [
+    { id: "emp2", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp3", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  12: [
+    { id: "emp2", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp1", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  13: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  14: [
+    { id: "emp1", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  15: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  16: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  17: [{ id: "emp3", start: "12:00", end: "02:00", hours: 14 }],
+  18: [
+    { id: "emp1", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp3", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  19: [
+    { id: "emp2", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp1", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  20: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  21: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  22: [
+    { id: "emp1", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  23: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  24: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  25: [
+    { id: "emp1", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp3", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  26: [
+    { id: "emp2", start: "12:00", end: "02:00", hours: 14 },
+    { id: "emp1", start: "17:00", end: "04:00", hours: 11 },
+  ],
+  27: [
+    { id: "emp2", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  28: [{ id: "emp2", start: "12:00", end: "02:00", hours: 14 }],
+  29: [
+    { id: "emp1", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+  30: [
+    { id: "emp1", start: "12:00", end: "23:00", hours: 11 },
+    { id: "emp3", start: "19:00", end: "02:00", hours: 7 },
+  ],
+};
+
+function hoursEntry(id, d) {
+  if (year !== HOURS_YEAR || month !== HOURS_MONTH) return null;
+  const list = HOURS_DATA[d];
+  if (!list) return null;
+  return list.find((e) => e.id === id) || null;
+}
+function shiftFromHours(h) {
+  return h.start === "12:00" ? "day" : "eve";
+}
+function shortHour(t) {
+  return t.split(":")[0];
+}
+function fmtRange(h) {
+  return `${shortHour(h.start)}–${shortHour(h.end)}`;
+}
+
+/* ══════════════════════════════════════════
    Helpers
 ══════════════════════════════════════════ */
 function key(id, d) {
   return `${id}|${year}|${month}|${d}`;
 }
 function getShift(id, d) {
+  const h = hoursEntry(id, d);
+  if (h) return shiftFromHours(h);
   return schedule[key(id, d)] || "off";
 }
 function nextShift(s) {
@@ -159,12 +281,17 @@ function renderTable(days) {
         <span class="emp-insta">${emp.instagram}</span>
       </td>`;
     for (let d = 1; d <= days; d++) {
+      const h = hoursEntry(id, d);
       const sh = getShift(id, d);
       const we = isWeekend(d);
       const cf = isConflict(id, d);
-      const ro = readOnly ? " readonly" : "";
+      const ro = readOnly || h ? " readonly" : "";
+      const title = h ? ` title="${emp.name}: ${h.start}–${h.end} (${h.hours}ч)"` : "";
+      const content = h
+        ? `<span class="chip-time">${fmtRange(h)}</span><span class="chip-hours">${h.hours}ч</span>`
+        : LABELS[sh];
       html += `<td class="${we ? "weekend-col" : ""}">
-        <span class="chip ${sh}${cf ? " conflict" : ""}${ro}" data-id="${id}" data-day="${d}">${LABELS[sh]}</span>
+        <span class="chip ${sh}${cf ? " conflict" : ""}${ro}${h ? " has-hours" : ""}" data-id="${id}" data-day="${d}"${title}>${content}</span>
       </td>`;
     }
     html += "</tr>";
@@ -299,18 +426,24 @@ function renderWeeks(days) {
       const dow = dowIdx(d);
       const we = dow === 0 || dow === 6;
       const dateStr = `${padTwo(d)}.${padTwo(month + 1)}`;
-      const workers = EMP_KEYS.map((id) => ({ emp: EMPLOYEES[id], sh: getShift(id, d) })).filter((w) => w.sh !== "off");
+      const workers = EMP_KEYS.map((id) => ({ emp: EMPLOYEES[id], sh: getShift(id, d), h: hoursEntry(id, d) })).filter(
+        (w) => w.sh !== "off",
+      );
 
       const workersHtml =
         workers.length === 0
           ? `<span class="wday-empty">выходной</span>`
           : workers
-              .map(
-                (w) =>
-                  `<span class="worker-pill ${w.sh}">
-               ${w.emp.instagram}
-               <span class="shift-badge"> ${SHIFT_NAMES[w.sh]}</span>
-             </span>`,
+              .map((w) =>
+                w.h
+                  ? `<span class="worker-pill ${w.sh}">
+                 ${w.emp.name}
+                 <span class="shift-badge">${w.h.start}–${w.h.end} · ${w.h.hours}ч</span>
+               </span>`
+                  : `<span class="worker-pill ${w.sh}">
+                 ${w.emp.instagram}
+                 <span class="shift-badge"> ${SHIFT_NAMES[w.sh]}</span>
+               </span>`,
               )
               .join("");
 
