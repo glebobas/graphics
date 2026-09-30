@@ -1,66 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>График работы</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-<div class="page">
-
-  <div class="header">
-    <div class="header-left">
-      <h1>График работы</h1>
-      <p id="header-sub">Нажмите на ячейку, чтобы переключить смену</p>
-    </div>
-    <div class="header-right">
-      <div class="month-nav">
-        <button class="nav-btn" id="prev">&#8592;</button>
-        <span class="month-label" id="month-label"></span>
-        <button class="nav-btn" id="next">&#8594;</button>
-      </div>
-      <button class="export-btn" id="export-btn" style="display:none">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 2v8M5 7l3 3 3-3M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2"/>
-        </svg>
-        Скачать schedule.json
-      </button>
-    </div>
-  </div>
-
-  <div class="readonly-banner" id="readonly-banner">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.5v.5"/>
-    </svg>
-    Просмотр — график загружен из schedule.json
-  </div>
-
-  <div class="legend">
-    <div class="leg-pill day"><div class="leg-dot"></div>Дневная</div>
-    <div class="leg-pill eve"><div class="leg-dot"></div>Вечерняя</div>
-    <div class="leg-pill off"><div class="leg-dot"></div>Выходной</div>
-    <div class="leg-pill warn"><div class="leg-dot"></div>Короткий отдых — вечер → утро</div>
-  </div>
-
-  <div class="card">
-    <div class="table-scroll">
-      <table id="sched-table"></table>
-    </div>
-  </div>
-
-  <div class="emp-cards-section">
-    <div class="section-title">Личное расписание</div>
-    <div class="emp-cards-grid" id="emp-cards"></div>
-  </div>
-
-  <div class="weekly-section">
-    <div class="section-title">По неделям</div>
-    <div class="weeks-grid" id="weeks"></div>
-  </div>
-
-</div>
-<script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>График работы</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
