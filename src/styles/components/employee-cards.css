@@ -1,0 +1,229 @@
+/* EmployeeCards: карточки сотрудников с мини-календарём */
+
+.emp-cards-section {
+  margin-top: 28px;
+}
+
+.emp-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.emp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  min-width: 0; /* prevent grid blowout */
+}
+
+.emp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.emp-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.emp-avatar.c0 {
+  background: var(--day-bg);
+  color: var(--day-text);
+}
+.emp-avatar.c1 {
+  background: var(--eve-bg);
+  color: var(--eve-text);
+}
+.emp-avatar.c2 {
+  background: #fae8d4;
+  color: #7a3b10;
+}
+.emp-avatar.c3 {
+  background: #d4e8f5;
+  color: #0f4a6e;
+}
+
+.emp-card-info {
+  flex: 1;
+  min-width: 0;
+}
+.emp-card-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.emp-card-ig {
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+/* Mini calendar */
+.mini-cal {
+  padding: 14px 16px;
+}
+
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.mini-cal-dow {
+  text-align: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-bottom: 5px;
+}
+
+.mini-cal-dow.we {
+  color: var(--warn-text);
+  opacity: 0.6;
+}
+
+.mini-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.mini-day.empty {
+  background: transparent;
+}
+.mini-day.off {
+  color: var(--text-3);
+  background: transparent;
+}
+.mini-day.day {
+  background: var(--day-bg);
+  color: var(--day-text);
+}
+.mini-day.eve {
+  background: var(--eve-bg);
+  color: var(--eve-text);
+}
+.mini-day.conflict-flag {
+  outline: 2px solid var(--warn-border);
+  outline-offset: -2px;
+}
+.mini-day.is-weekend.off {
+  color: var(--text-3);
+  opacity: 0.45;
+}
+
+.mini-day-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+  gap: 1px;
+}
+
+.mini-day-num {
+  font-size: 10px;
+  font-weight: 700;
+}
+.mini-day-lbl {
+  font-size: 7px;
+  font-weight: 600;
+  opacity: 0.75;
+  letter-spacing: 0.02em;
+}
+
+/* Card footer stats */
+.emp-card-footer {
+  display: flex;
+  border-top: 1px solid var(--border);
+}
+
+.footer-stat {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+
+.footer-stat:last-child {
+  border-right: none;
+}
+
+.footer-stat-val {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.footer-stat-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-3);
+  margin-top: 3px;
+}
+
+.fv-day {
+  color: var(--day-text);
+}
+.fv-eve {
+  color: var(--eve-text);
+}
+.fv-warn {
+  color: var(--warn-text);
+}
+.fv-total {
+  color: var(--text-1);
+}
+
+/* Планшет — карточки в одну колонку */
+@media (max-width: 860px) {
+  .emp-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .mini-cal {
+    padding: 10px 12px;
+  }
+
+  .mini-cal-grid {
+    gap: 1px;
+  }
+
+  .mini-day-lbl {
+    display: none; /* слишком мелко на телефоне */
+  }
+
+  .footer-stat-val {
+    font-size: 16px;
+  }
+
+  .footer-stat-lbl {
+    font-size: 8px;
+  }
+
+  .emp-card-header {
+    padding: 14px 16px 12px;
+  }
+}

@@ -1,0 +1,81 @@
+/* Chip: ячейка смены (Д / В / — и точные часы) */
+
+/* Shift chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    transform 0.1s,
+    opacity 0.1s;
+  user-select: none;
+}
+
+.chip:hover {
+  opacity: 0.75;
+}
+.chip:active {
+  transform: scale(0.93);
+}
+
+.chip.off {
+  background: var(--off-bg);
+  color: var(--off-text);
+  border-color: var(--border);
+}
+.chip.day {
+  background: var(--day-bg);
+  color: var(--day-text);
+  border-color: var(--day-border);
+}
+.chip.eve {
+  background: var(--eve-bg);
+  color: var(--eve-text);
+  border-color: var(--eve-border);
+}
+
+.chip.day.conflict {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border: 2px solid var(--warn-border);
+}
+
+.chip.readonly {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Chip with exact hours (start–end + duration) */
+.chip.has-hours {
+  flex-direction: column;
+  width: 48px;
+  height: 36px;
+  gap: 1px;
+  line-height: 1.15;
+  cursor: default;
+}
+
+.chip-time {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.chip-hours {
+  font-size: 8px;
+  font-weight: 600;
+  opacity: 0.65;
+  text-transform: lowercase;
+}
+
+.chip.has-hours.conflict {
+  border-width: 1.5px;
+}

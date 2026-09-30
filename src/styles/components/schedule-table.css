@@ -1,0 +1,100 @@
+/* ScheduleTable: карточка и таблица графика */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 720px;
+}
+
+thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
+thead th {
+  padding: 10px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: nowrap;
+  background: var(--surface);
+}
+
+thead th.name-th {
+  text-align: left;
+  padding-left: 24px;
+  min-width: 130px;
+}
+
+thead th.day-num {
+  min-width: 54px;
+}
+thead th.weekend-col {
+  background: var(--weekend-bg);
+}
+
+.is-today {
+  color: var(--warn-border) !important;
+  font-weight: 700;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+tbody tr:hover {
+  background: #fafaf8;
+}
+
+td {
+  padding: 10px 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+td.name-td {
+  text-align: left;
+  padding-left: 24px;
+  padding-right: 16px;
+}
+
+.emp-name {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+}
+.emp-insta {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+td.weekend-col {
+  background: var(--weekend-bg);
+}
+
+.dow {
+  display: block;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text-3);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}

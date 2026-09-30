@@ -1,0 +1,113 @@
+/* WeeklyBreakdown: разбивка по неделям */
+
+.weekly-section {
+  margin-top: 32px;
+}
+
+.weeks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.week-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.week-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+  background: var(--bg);
+}
+
+.week-days {
+  padding: 8px 0;
+}
+
+.week-day-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 7px 16px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.week-day-row:last-child {
+  border-bottom: none;
+}
+.week-day-row.is-weekend {
+  background: var(--weekend-bg);
+}
+
+.wday-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-3);
+  min-width: 30px;
+  padding-top: 1px;
+}
+
+.wday-name.weekend {
+  color: var(--warn-text);
+}
+
+.wday-date {
+  font-size: 11px;
+  color: var(--text-3);
+  min-width: 38px;
+  padding-top: 2px;
+}
+
+.wday-workers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex: 1;
+}
+
+.wday-empty {
+  font-size: 12px;
+  color: var(--text-3);
+  font-style: italic;
+}
+
+.worker-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.worker-pill.day {
+  background: var(--day-bg);
+  color: var(--day-text);
+  border-color: var(--day-border);
+}
+.worker-pill.eve {
+  background: var(--eve-bg);
+  color: var(--eve-text);
+  border-color: var(--eve-border);
+}
+
+.shift-badge {
+  font-size: 9px;
+  font-weight: 700;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  .weeks-grid {
+    grid-template-columns: 1fr;
+  }
+}

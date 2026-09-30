@@ -1,0 +1,72 @@
+/* Legend: легенда смен */
+
+.legend {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.leg-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.leg-pill.day {
+  background: var(--day-bg);
+  color: var(--day-text);
+  border-color: var(--day-border);
+}
+.leg-pill.eve {
+  background: var(--eve-bg);
+  color: var(--eve-text);
+  border-color: var(--eve-border);
+}
+.leg-pill.off {
+  background: var(--off-bg);
+  color: var(--off-text);
+  border-color: var(--border);
+}
+.leg-pill.warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-color: var(--warn-border);
+}
+
+.leg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.leg-pill.day .leg-dot {
+  background: var(--day-text);
+}
+.leg-pill.eve .leg-dot {
+  background: var(--eve-text);
+}
+.leg-pill.off .leg-dot {
+  background: var(--off-text);
+}
+.leg-pill.warn .leg-dot {
+  background: var(--warn-border);
+}
+
+@media (max-width: 600px) {
+  .legend {
+    gap: 6px;
+  }
+
+  .leg-pill {
+    font-size: 11px;
+    padding: 4px 10px 4px 7px;
+  }
+}

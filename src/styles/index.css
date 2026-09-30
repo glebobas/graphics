@@ -1,0 +1,15 @@
+/* Точка входа стилей. Порядок важен: сначала base, затем компоненты. */
+
+/* base */
+@import "./base/reset.css";
+@import "./base/tokens.css";
+@import "./base/global.css";
+
+/* components */
+@import "./components/header.css";
+@import "./components/legend.css";
+@import "./components/schedule-table.css";
+@import "./components/chip.css";
+@import "./components/section-title.css";
+@import "./components/employee-cards.css";
+@import "./components/weekly-breakdown.css";

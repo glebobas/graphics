@@ -1,4 +1,5 @@
 import { EMPLOYEES, EMP_KEYS, LABELS } from "../constants";
+import { isToday } from "../utils/isToday";
 import {
   daysInMonth,
   dowStr,
@@ -28,12 +29,15 @@ export function ScheduleTable({ ctx, readOnly, onToggle }: Props) {
           <thead>
             <tr>
               <th className="name-th">Сотрудник</th>
-              {days.map((d) => (
-                <th key={d} className={`day-num${isWeekend(year, month, d) ? " weekend-col" : ""}`}>
-                  {d}
-                  <span className="dow">{dowStr(year, month, d)}</span>
-                </th>
-              ))}
+              {days.map((d) => {
+                const today = isToday(d);
+                return (
+                  <th key={d} className={`day-num${isWeekend(year, month, d) ? " weekend-col" : ""} ${today ? "is-today" : ""}`}>
+                    {d}
+                    <span className={`dow ${today ? "is-today" : ""}`}>{dowStr(year, month, d)}</span>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>
