@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EMPLOYEES, EMP_KEYS, LABELS } from "../constants";
+import { LABELS } from "../constants";
 import type { TimeRange, WorkingShift } from "../types";
 import { isToday } from "../utils/isToday";
 import {
@@ -62,8 +62,8 @@ export function ScheduleTable({ ctx, readOnly, onToggle, onSetHours }: Props) {
             </tr>
           </thead>
           <tbody>
-            {EMP_KEYS.map((id) => {
-              const emp = EMPLOYEES[id];
+            {ctx.employees.map((emp) => {
+              const { id } = emp;
               return (
                 <tr key={id}>
                   <td className="name-td">

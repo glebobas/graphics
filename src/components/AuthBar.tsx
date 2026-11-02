@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { signInWithEmailAndPassword, signOut, type User } from "firebase/auth";
+import { TEAMS, type Team } from "../constants";
 import { auth } from "../firebase";
 
-export function AuthBar({ user }: { user: User | null }) {
+export function AuthBar({ user, role }: { user: User | null; role: Team | null }) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,9 +23,14 @@ export function AuthBar({ user }: { user: User | null }) {
 
   if (user) {
     return (
-      <button className="export-btn" style={{ marginTop: 32 }} onClick={() => signOut(auth)}>
-        Выйти
-      </button>
+      <div className="auth-bar">
+        <button className="export-btn" onClick={() => signOut(auth)}>
+          Выйти
+        </button>
+        <span className="auth-role">
+          {user.email} · {role ? TEAMS[role].label : "роль не назначена"}
+        </span>
+      </div>
     );
   }
 

@@ -1,0 +1,27 @@
+// Правила Firestore: читать графики могут все, редактировать — только своя команда.
+// Роль пользователя: документ users/{uid} с полем role: "bar" | "admin" (задаётся в консоли Firebase).
+// Публикация: Firebase Console → Firestore → Rules (или `firebase deploy --only firestore:rules`).
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function hasRole(role) {
+      return request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
+    }
+
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /schedules/main {
+      allow read: if true;
+      allow write: if hasRole("bar");
+    }
+
+    match /schedules/admin {
+      allow read: if true;
+      allow write: if hasRole("admin");
+    }
+  }
+}

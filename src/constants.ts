@@ -1,12 +1,35 @@
 import type { Employee, Shift, TimeRange, WorkingShift } from "./types";
 
-/** Сотрудники — редактируйте здесь */
-export const EMPLOYEES: Record<string, Employee> = {
-  emp1: { id: "emp1", name: "Рома", instagram: "@roma" },
-  emp2: { id: "emp2", name: "Егор", instagram: "@egor" },
-  emp3: { id: "emp3", name: "Глеб", instagram: "@gleb" },
+export type Team = "bar" | "admin";
+
+interface TeamConfig {
+  label: string;
+  /** Документ в коллекции schedules */
+  doc: string;
+  employees: Employee[];
+}
+
+/** Команды и сотрудники — редактируйте здесь. id должны быть уникальны в пределах команды */
+export const TEAMS: Record<Team, TeamConfig> = {
+  bar: {
+    label: "Бармены",
+    doc: "main",
+    employees: [
+      { id: "emp1", name: "Рома", instagram: "@roma" },
+      { id: "emp2", name: "Егор", instagram: "@egor" },
+      { id: "emp3", name: "Глеб", instagram: "@gleb" },
+    ],
+  },
+  admin: {
+    label: "Админы",
+    doc: "admin",
+    employees: [
+      { id: "adm1", name: "Админ 1", instagram: "@admin1" },
+      { id: "adm2", name: "Админ 2", instagram: "@admin2" },
+    ],
+  },
 };
-export const EMP_KEYS = Object.keys(EMPLOYEES);
+export const TEAM_KEYS = Object.keys(TEAMS) as Team[];
 
 export const SHIFTS: Shift[] = ["off", "day", "eve"];
 export const LABELS: Record<Shift, string> = { off: "—", day: "Д", eve: "В" };

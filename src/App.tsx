@@ -1,19 +1,23 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthBar } from "./components/AuthBar";
-import { EmployeeCards } from "./components/EmployeeCards";
 import { Header } from "./components/Header";
 import { Legend } from "./components/Legend";
-import { ScheduleTable } from "./components/ScheduleTable";
-import { useSchedule } from "./hooks/useSchedule";
-import type { MonthCtx } from "./utils/schedule";
+import { TeamSchedule } from "./components/TeamSchedule";
+import { TeamTabs } from "./components/TeamTabs";
+import type { Team } from "./constants";
+import { useAuth } from "./hooks/useAuth";
 
 export default function App() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
-  const { schedule, hours, readOnly, loading, toggle, setHours, user } = useSchedule();
+  const [team, setTeam] = useState<Team>("bar");
+  const { user, role } = useAuth();
 
-  const ctx = useMemo<MonthCtx>(() => ({ year, month, schedule, hours }), [year, month, schedule, hours]);
+  // После входа открываем свой график
+  useEffect(() => {
+    if (role) setTeam(role);
+  }, [role]);
 
   const shiftMonth = (delta: number) => {
     const d = new Date(year, month + delta, 1);
@@ -21,22 +25,21 @@ export default function App() {
     setMonth(d.getMonth());
   };
 
-  if (loading) return null;
+  const canEdit = role === team;
 
   return (
     <div className="page">
-      <AuthBar user={user} />
+      <AuthBar user={user} role={role} />
       <Header
         year={year}
         month={month}
-        readOnly={readOnly}
+        readOnly={!canEdit}
         onPrev={() => shiftMonth(-1)}
         onNext={() => shiftMonth(1)}
       />
+      <TeamTabs value={team} own={role} onChange={setTeam} />
       <Legend />
-      <ScheduleTable ctx={ctx} readOnly={readOnly} onToggle={toggle} onSetHours={setHours} />
-      <EmployeeCards ctx={ctx} />
-      {/* <WeeklyBreakdown ctx={ctx} /> */}
+      <TeamSchedule key={team} team={team} year={year} month={month} canEdit={canEdit} />
     </div>
   );
 }

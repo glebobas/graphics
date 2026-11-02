@@ -1,16 +1,16 @@
-import { CAL_LABELS, EMPLOYEES, EMP_KEYS, SHIFT_SHORT } from "../constants";
-import type { WorkingShift } from "../types";
+import { CAL_LABELS, SHIFT_SHORT } from "../constants";
+import type { Employee, WorkingShift } from "../types";
 import { daysInMonth, dowIdx, fmtNum, getHours, getShift, initials, isConflict, type MonthCtx } from "../utils/schedule";
 
 interface CardProps {
   ctx: MonthCtx;
-  id: string;
+  emp: Employee;
   index: number;
 }
 
-function EmployeeCard({ ctx, id, index }: CardProps) {
+function EmployeeCard({ ctx, emp, index }: CardProps) {
   const { year, month } = ctx;
-  const emp = EMPLOYEES[id];
+  const { id } = emp;
   const days = daysInMonth(year, month);
   const firstDow = new Date(year, month, 1).getDay();
   const offset = firstDow === 0 ? 6 : firstDow - 1;
@@ -104,8 +104,8 @@ export function EmployeeCards({ ctx }: { ctx: MonthCtx }) {
     <div className="emp-cards-section">
       <div className="section-title">Личное расписание</div>
       <div className="emp-cards-grid">
-        {EMP_KEYS.map((id, idx) => (
-          <EmployeeCard key={id} ctx={ctx} id={id} index={idx} />
+        {ctx.employees.map((emp, idx) => (
+          <EmployeeCard key={emp.id} ctx={ctx} emp={emp} index={idx} />
         ))}
       </div>
     </div>
