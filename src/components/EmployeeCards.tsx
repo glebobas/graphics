@@ -1,6 +1,6 @@
 import { CAL_LABELS, EMPLOYEES, EMP_KEYS, SHIFT_SHORT } from "../constants";
 import type { WorkingShift } from "../types";
-import { daysInMonth, dowIdx, getShift, initials, isConflict, type MonthCtx } from "../utils/schedule";
+import { daysInMonth, dowIdx, fmtNum, getHours, getShift, initials, isConflict, type MonthCtx } from "../utils/schedule";
 
 interface CardProps {
   ctx: MonthCtx;
@@ -18,10 +18,12 @@ function EmployeeCard({ ctx, id, index }: CardProps) {
   let dayCnt = 0;
   let eveCnt = 0;
   let conflicts = 0;
+  let hours = 0;
   for (let d = 1; d <= days; d++) {
     const sh = getShift(ctx, id, d);
     if (sh === "day") dayCnt++;
     if (sh === "eve") eveCnt++;
+    hours += getHours(ctx, id, d)?.hours ?? 0;
     if (isConflict(ctx, id, d)) conflicts++;
   }
 
@@ -81,6 +83,10 @@ function EmployeeCard({ ctx, id, index }: CardProps) {
         <div className="footer-stat">
           <div className="footer-stat-val fv-total">{dayCnt + eveCnt}</div>
           <div className="footer-stat-lbl">Всего смен</div>
+        </div>
+        <div className="footer-stat">
+          <div className="footer-stat-val fv-total">{fmtNum(hours)}</div>
+          <div className="footer-stat-lbl">Часов</div>
         </div>
         {conflicts > 0 && (
           <div className="footer-stat">

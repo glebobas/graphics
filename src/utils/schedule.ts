@@ -1,11 +1,18 @@
-import { DAYS_RU, SHIFTS } from "../constants";
+import { DAYS_RU, DEFAULT_HOURS, SHIFTS } from "../constants";
 import { HOURS_DATA, HOURS_MONTH, HOURS_YEAR } from "../hoursData";
-import type { HoursEntry, ScheduleMap, Shift } from "../types";
+import type { HoursEntry, HoursMap, ScheduleMap, Shift, TimeRange, WorkingShift } from "../types";
 
 export interface MonthCtx {
   year: number;
   month: number; // 0-indexed
   schedule: ScheduleMap;
+  hours: HoursMap;
+}
+
+export interface CellHours extends TimeRange {
+  hours: number;
+  /** Часы из hoursData.ts — не редактируются */
+  locked: boolean;
 }
 
 export const scheduleKey = (id: string, year: number, month: number, d: number) =>
@@ -34,19 +41,46 @@ export const initials = (name: string) =>
 
 export const nextShift = (s: Shift): Shift => SHIFTS[(SHIFTS.indexOf(s) + 1) % SHIFTS.length];
 
-/* ── Точные часы ── */
-export function hoursEntry(year: number, month: number, id: string, d: number): HoursEntry | null {
+/* ── Часы ── */
+function legacyHours(year: number, month: number, id: string, d: number): HoursEntry | null {
   if (year !== HOURS_YEAR || month !== HOURS_MONTH) return null;
   return HOURS_DATA[d]?.find((entry) => entry.id === id) ?? null;
 }
 
 const shiftFromHours = (h: HoursEntry): Shift => (h.start === "12:00" ? "day" : "eve");
-const shortHour = (t: string) => t.split(":")[0];
-export const fmtRange = (h: HoursEntry) => `${shortHour(h.start)}–${shortHour(h.end)}`;
+
+const toMin = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+};
+
+/** Длительность в часах; конец раньше начала — смена через полночь */
+export const duration = ({ start, end }: TimeRange) =>
+  ((toMin(end) - toMin(start) + 1440) % 1440 || 1440) / 60;
+
+/** Пт и Сб — «длинные» дни */
+export const defaultHours = (shift: WorkingShift, year: number, month: number, d: number): TimeRange =>
+  DEFAULT_HOURS[shift][[5, 6].includes(dowIdx(year, month, d)) ? 1 : 0];
+
+export const fmtNum = (n: number) => String(+n.toFixed(2)).replace(".", ",");
+const shortTime = (t: string) => t.replace(/:00$/, "");
+export const fmtRange = (h: TimeRange) => `${shortTime(h.start)}–${shortTime(h.end)}`;
+
+/** Часы ячейки: hoursData.ts → ручная правка → по умолчанию для смены */
+export function getHours(ctx: MonthCtx, id: string, d: number): CellHours | null {
+  const { year, month } = ctx;
+  const legacy = legacyHours(year, month, id, d);
+  if (legacy) return { start: legacy.start, end: legacy.end, hours: legacy.hours, locked: true };
+
+  const sh = getShift(ctx, id, d);
+  if (sh === "off") return null;
+  const range = ctx.hours[scheduleKey(id, year, month, d)] ?? defaultHours(sh, year, month, d);
+  return { ...range, hours: duration(range), locked: false };
+}
 
 /* ── Смены ── */
 export function getShift(ctx: MonthCtx, id: string, d: number): Shift {
-  const h = hoursEntry(ctx.year, ctx.month, id, d);
+  const h = legacyHours(ctx.year, ctx.month, id, d);
   if (h) return shiftFromHours(h);
   return ctx.schedule[scheduleKey(id, ctx.year, ctx.month, d)] ?? "off";
 }

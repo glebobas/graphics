@@ -11,9 +11,9 @@ export default function App() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
-  const { schedule, readOnly, loading, toggle, user } = useSchedule();
+  const { schedule, hours, readOnly, loading, toggle, setHours, user } = useSchedule();
 
-  const ctx = useMemo<MonthCtx>(() => ({ year, month, schedule }), [year, month, schedule]);
+  const ctx = useMemo<MonthCtx>(() => ({ year, month, schedule, hours }), [year, month, schedule, hours]);
 
   const shiftMonth = (delta: number) => {
     const d = new Date(year, month + delta, 1);
@@ -34,7 +34,7 @@ export default function App() {
         onNext={() => shiftMonth(1)}
       />
       <Legend />
-      <ScheduleTable ctx={ctx} readOnly={readOnly} onToggle={toggle} />
+      <ScheduleTable ctx={ctx} readOnly={readOnly} onToggle={toggle} onSetHours={setHours} />
       <EmployeeCards ctx={ctx} />
       {/* <WeeklyBreakdown ctx={ctx} /> */}
     </div>
