@@ -1,6 +1,6 @@
 import { DAYS_RU, EMPLOYEES, EMP_KEYS, SHIFT_NAMES } from "../constants";
 import type { WorkingShift } from "../types";
-import { dowIdx, getShift, hoursEntry, padTwo, splitWeeks, type MonthCtx } from "../utils/schedule";
+import { dowIdx, fmtNum, getHours, getShift, padTwo, splitWeeks, type MonthCtx } from "../utils/schedule";
 
 function WeekDayRow({ ctx, d }: { ctx: MonthCtx; d: number }) {
   const { year, month } = ctx;
@@ -10,7 +10,7 @@ function WeekDayRow({ ctx, d }: { ctx: MonthCtx; d: number }) {
   const workers = EMP_KEYS.map((id) => ({
     emp: EMPLOYEES[id],
     sh: getShift(ctx, id, d),
-    h: hoursEntry(year, month, id, d),
+    h: getHours(ctx, id, d),
   })).filter((w) => w.sh !== "off");
 
   return (
@@ -27,7 +27,7 @@ function WeekDayRow({ ctx, d }: { ctx: MonthCtx; d: number }) {
                 <>
                   {w.emp.name}
                   <span className="shift-badge">
-                    {w.h.start}–{w.h.end} · {w.h.hours}ч
+                    {w.h.start}–{w.h.end} · {fmtNum(w.h.hours)}ч
                   </span>
                 </>
               ) : (

@@ -10,13 +10,21 @@ export interface Employee {
 /** Ключ вида `emp1|2026|8|15` (месяц 0-indexed, как в исходном коде). */
 export type ScheduleMap = Record<string, Shift>;
 
-export interface HoursEntry {
-  id: string;
+/** Интервал смены, время в формате `HH:MM` */
+export interface TimeRange {
   start: string;
   end: string;
+}
+
+/** Ручные правки часов, ключ — как в ScheduleMap */
+export type HoursMap = Record<string, TimeRange>;
+
+export interface HoursEntry extends TimeRange {
+  id: string;
   hours: number;
 }
 
 export interface ScheduleFile {
   schedule: ScheduleMap;
+  hours?: HoursMap;
 }

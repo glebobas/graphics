@@ -15,7 +15,7 @@ export function Header({ year, month, readOnly, onPrev, onNext }: Props) {
       <div className="header">
         <div className="header-left">
           <h1>График работы</h1>
-          <p>{readOnly ? "Актуальный график" : "Нажмите на ячейку, чтобы переключить смену"}</p>
+          <p>{readOnly ? "Актуальный график" : "Нажмите на ячейку, чтобы переключить смену, ✎ — изменить часы"}</p>
         </div>
         <div className="header-right">
           <div className="month-nav">
