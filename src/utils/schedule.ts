@@ -1,12 +1,13 @@
 import { DAYS_RU, DEFAULT_HOURS, SHIFTS } from "../constants";
 import { HOURS_DATA, HOURS_MONTH, HOURS_YEAR } from "../hoursData";
-import type { HoursEntry, HoursMap, ScheduleMap, Shift, TimeRange, WorkingShift } from "../types";
+import type { Employee, HoursEntry, HoursMap, ScheduleMap, Shift, TimeRange, WorkingShift } from "../types";
 
 export interface MonthCtx {
   year: number;
   month: number; // 0-indexed
   schedule: ScheduleMap;
   hours: HoursMap;
+  employees: Employee[];
 }
 
 export interface CellHours extends TimeRange {

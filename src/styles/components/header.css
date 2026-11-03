@@ -136,3 +136,18 @@
     display: none; /* на мобиле — только иконка */
   }
 }
+
+/* Auth: кнопка выхода + текущая роль */
+.auth-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.auth-role {
+  font-size: 12px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}

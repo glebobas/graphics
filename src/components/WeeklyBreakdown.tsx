@@ -1,4 +1,4 @@
-import { DAYS_RU, EMPLOYEES, EMP_KEYS, SHIFT_NAMES } from "../constants";
+import { DAYS_RU, SHIFT_NAMES } from "../constants";
 import type { WorkingShift } from "../types";
 import { dowIdx, fmtNum, getHours, getShift, padTwo, splitWeeks, type MonthCtx } from "../utils/schedule";
 
@@ -7,10 +7,10 @@ function WeekDayRow({ ctx, d }: { ctx: MonthCtx; d: number }) {
   const dow = dowIdx(year, month, d);
   const we = dow === 0 || dow === 6;
 
-  const workers = EMP_KEYS.map((id) => ({
-    emp: EMPLOYEES[id],
-    sh: getShift(ctx, id, d),
-    h: getHours(ctx, id, d),
+  const workers = ctx.employees.map((emp) => ({
+    emp,
+    sh: getShift(ctx, emp.id, d),
+    h: getHours(ctx, emp.id, d),
   })).filter((w) => w.sh !== "off");
 
   return (

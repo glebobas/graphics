@@ -1,0 +1,53 @@
+/* TeamTabs: переключатель графиков команд */
+
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-2);
+  font: 600 13px "Manrope", sans-serif;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.tab:hover {
+  color: var(--text-1);
+}
+
+.tab.active {
+  background: var(--text-1);
+  color: #fff;
+}
+
+.tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--day-border);
+}
+
+@media (max-width: 600px) {
+  .tabs {
+    display: flex;
+  }
+  .tab {
+    flex: 1;
+    justify-content: center;
+  }
+}

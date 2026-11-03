@@ -1,26 +1,15 @@
-import { onAuthStateChanged, type User } from "firebase/auth";
 import { deleteField, doc, onSnapshot, setDoc } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
-import { auth, db } from "../firebase";
+import { useEffect, useMemo, useState } from "react";
+import { db } from "../firebase";
 import type { HoursMap, ScheduleMap, TimeRange } from "../types";
 import { nextShift } from "../utils/schedule";
 
-const ref = doc(db, "schedules", "main");
-
-// merge: true обновляет только переданные ячейки, а не весь документ
-const save = (data: object) =>
-  setDoc(ref, data, { merge: true }).catch((err) => {
-    console.error("Ошибка записи:", err);
-    alert("Не удалось сохранить: " + err.code);
-  });
-
-export function useSchedule() {
+/** График из schedules/{docId}; запись — только при canEdit */
+export function useSchedule(docId: string, canEdit: boolean) {
+  const ref = useMemo(() => doc(db, "schedules", docId), [docId]);
   const [schedule, setSchedule] = useState<ScheduleMap>({});
   const [hours, setHoursMap] = useState<HoursMap>({});
-  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => onAuthStateChanged(auth, setUser), []);
 
   useEffect(
     () =>
@@ -36,28 +25,24 @@ export function useSchedule() {
           setLoading(false);
         },
       ),
-    [],
+    [ref],
   );
 
-  const readOnly = !user;
+  // merge: true обновляет только переданные ячейки, а не весь документ
+  const save = (data: object) => {
+    if (!canEdit) return;
+    setDoc(ref, data, { merge: true }).catch((err) => {
+      console.error("Ошибка записи:", err);
+      alert("Не удалось сохранить: " + err.code);
+    });
+  };
 
   /** Смена переключается — ручные часы сбрасываются к значениям по умолчанию */
-  const toggle = useCallback(
-    (key: string) => {
-      if (readOnly) return;
-      save({ schedule: { [key]: nextShift(schedule[key] ?? "off") }, hours: { [key]: deleteField() } });
-    },
-    [readOnly, schedule],
-  );
+  const toggle = (key: string) =>
+    save({ schedule: { [key]: nextShift(schedule[key] ?? "off") }, hours: { [key]: deleteField() } });
 
   /** null — вернуть часы по умолчанию */
-  const setHours = useCallback(
-    (key: string, range: TimeRange | null) => {
-      if (readOnly) return;
-      save({ hours: { [key]: range ?? deleteField() } });
-    },
-    [readOnly],
-  );
+  const setHours = (key: string, range: TimeRange | null) => save({ hours: { [key]: range ?? deleteField() } });
 
-  return { schedule, hours, readOnly, loading, toggle, setHours, user };
+  return { schedule, hours, loading, toggle, setHours };
 }
